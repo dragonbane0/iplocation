@@ -22,7 +22,7 @@ async function ipLocation(ip) {
     if (typeof ip !== "string" || !is_ip_1.default.v4(ip)) {
         throw new TypeError("A valid ipv4 address must be provided!");
     }
-    const { org, asn, latitude, longitude, city, reserved, region, region_code, country_name, country_code, country_code_iso3, country_capital, country_tld, country_population, country_calling_code, continent_code, in_eu, postal, timezone, utc_offset, currency, currency_name, languages, country_area } = await ky_universal_1.default(`https://ipapi.co/${ip}/json/`).json();
+    const { org, asn, latitude, longitude, city, reserved, region, region_code, country_name, country_code, country_code_iso3, country_capital, country_tld, country_population, country_calling_code, continent_code, in_eu, postal, timezone, utc_offset, currency, currency_name, languages, country_area } = await ky_universal_1.default(`https://ipapi.co/${ip}/json/`, { headers: { "User-Agent": "ZSR" } }).json();
     return reserved ? {
         reserved
     } : {

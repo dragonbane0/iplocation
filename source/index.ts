@@ -3,6 +3,8 @@ import isIp from "is-ip"
 
 interface IpApiData {
 	ip: string
+	org: string
+	asn: string
 	city: string
 	reserved: boolean
 	region: string
@@ -61,6 +63,10 @@ declare namespace ipLocation {
 			code: string
 			inEu: boolean
 		}
+		provider: {
+			isp: string
+			asn: string
+		}
 	}
 
 	export interface ReservedData {
@@ -88,7 +94,7 @@ async function ipLocation(ip: string): Promise<ipLocation.ReturnType> {
 		throw new TypeError("A valid ipv4 address must be provided!")
 	}
 
-	const { latitude, longitude, city, reserved, region, region_code, country_name, country_code, country_code_iso3, country_capital, country_tld, country_population, country_calling_code, continent_code, in_eu, postal, timezone, utc_offset, currency, currency_name, languages, country_area }: IpApiData = await ky(`https://ipapi.co/${ip}/json/`).json()
+	const { org, asn, latitude, longitude, city, reserved, region, region_code, country_name, country_code, country_code_iso3, country_capital, country_tld, country_population, country_calling_code, continent_code, in_eu, postal, timezone, utc_offset, currency, currency_name, languages, country_area }: IpApiData = await ky(`https://ipapi.co/${ip}/json/`).json()
 
 	return reserved ? {
 		reserved
@@ -124,6 +130,10 @@ async function ipLocation(ip: string): Promise<ipLocation.ReturnType> {
 		continent: {
 			code: continent_code,
 			inEu: in_eu
+		},
+		provider: {
+			isp: org,
+			asn
 		}
 	}
 }
